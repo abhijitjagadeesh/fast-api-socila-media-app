@@ -21,6 +21,9 @@ built in API docs from browser
 Schema validation:
 Pydantic
 
+password encryption:
+passlib, bcrypt
+
 Typing:
 typing library (obviously!!)
 

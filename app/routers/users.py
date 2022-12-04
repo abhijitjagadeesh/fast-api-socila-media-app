@@ -4,17 +4,17 @@ from .. import models, schema
 from ..database import get_db
 from ..utils import hash
 
-router = APIRouter()
+router = APIRouter(prefix="/users", tags=["Users"])
 
 
-@router.get('/users/{id}', response_model = schema.UserCreateResponse)
+@router.get('/{id}', response_model = schema.UserCreateResponse)
 def get_user(id: int, db: Session = Depends(get_db)):
     user = db.query(models.Users).filter(models.Users.id == id).first()
     if user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'user {id} not found')
     return user
 
-@router.post("/users", status_code=status.HTTP_201_CREATED, response_model = schema.UserCreateResponse)
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model = schema.UserCreateResponse)
 def create_user(users: schema.UserCreate, db: Session = Depends(get_db)):
     hashed_password = hash(users.password)
     users.password = hashed_password
